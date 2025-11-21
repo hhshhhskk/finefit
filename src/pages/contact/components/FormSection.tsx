@@ -19,8 +19,10 @@ import {
 } from "../types/exerciseStyle";
 import type { DrinkingFrequencyType } from "../types/drinkingFrequency";
 import { submitSurveyApi } from "@/api/user/contact";
+import { useNavigate } from "react-router-dom";
 
 export default function FormSection() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -79,10 +81,11 @@ export default function FormSection() {
   });
 
   const onSubmit = async (data: FormData) => {
-    try {
-      console.log(data);
-      submitSurveyApi(data);
-    } catch (err) {
+    console.log(data);
+    const res = await submitSurveyApi(data);
+    if (res.code === 200) {
+      navigate("/");
+    } else {
       alert("신청 중 오류가 발생했습니다.");
     }
   };

@@ -6,8 +6,12 @@ import NotFound from "../pages/NotFound";
 import Layout from "@/layouts/Layout";
 import AdminLayout from "@/layouts/AdminLayout";
 import AdminPage from "@/pages/admin/page";
+import LoginPage from "@/pages/admin/login/LoginPage";
+import RegisterPage from "@/pages/admin/register/RegisterPage";
+import ProtectedRoute from "@/pages/admin/components/ProtectedRoute";
 
 export default function AppRoutes() {
+  const isLoggedIn = !!sessionStorage.getItem("role");
   const routes = [
     {
       path: "/",
@@ -21,7 +25,18 @@ export default function AppRoutes() {
     {
       path: "/admin",
       element: <AdminLayout />,
-      children: [{ index: true, element: <AdminPage /> }],
+      children: [
+        {
+          index: true,
+          element: (
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <AdminPage />
+            </ProtectedRoute>
+          ),
+        },
+        { path: "login", element: <LoginPage /> },
+        { path: "register", element: <RegisterPage /> },
+      ],
     },
     { path: "*", element: <NotFound /> },
   ];
