@@ -1,4 +1,5 @@
 import { loginApi } from "@/api/admin/loginApi";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
@@ -20,10 +21,12 @@ export default function LoginForm() {
     },
   });
 
-  const isLoggedIn = !!sessionStorage.getItem("role");
-  if (isLoggedIn) {
-    navigate("/admin");
-  }
+  useEffect(() => {
+    const isLoggedIn = !!sessionStorage.getItem("role");
+    if (isLoggedIn) {
+      navigate("/admin");
+    }
+  }, []);
 
   const onSubmit = async (loginData: LoginFormValues) => {
     try {

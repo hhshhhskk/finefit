@@ -8,7 +8,7 @@ export const loginApi = async (loginData: LoginFormValues) => {
     const res = await axios.post(loginUrl, loginData);
     const accessToken = res.headers["access"];
 
-    sessionStorage.setItem("role", res.data.role);
+    sessionStorage.setItem("role", res.data.data.role);
     sessionStorage.setItem("token", accessToken);
 
     return res.data;

@@ -9,6 +9,7 @@ import AdminPage from "@/pages/admin/page";
 import LoginPage from "@/pages/admin/login/LoginPage";
 import RegisterPage from "@/pages/admin/register/RegisterPage";
 import ProtectedRoute from "@/pages/admin/components/ProtectedRoute";
+import SurveyDetailPage from "@/pages/admin/surveys/SurveyDetail";
 
 export default function AppRoutes() {
   const isLoggedIn = !!sessionStorage.getItem("role");
@@ -36,8 +37,17 @@ export default function AppRoutes() {
         },
         { path: "login", element: <LoginPage /> },
         { path: "register", element: <RegisterPage /> },
+        {
+          path: "survey/:surveyId",
+          element: (
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <SurveyDetailPage />
+            </ProtectedRoute>
+          ),
+        },
       ],
     },
+
     { path: "*", element: <NotFound /> },
   ];
 

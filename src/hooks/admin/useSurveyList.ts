@@ -1,24 +1,21 @@
 import { getSurveyListApi } from "@/api/admin/surveyApi";
 import { useQuery } from "@tanstack/react-query";
 
-export interface Survey {
-  id: number;
+export interface SurveyList {
+  contact: string;
+  counselId: number;
+  counselStatus: string;
+  createAt: string;
   name: string;
-  phone: string;
-  email: string;
-  age: string;
-  experience: string;
-  goals: string[];
-  availableTime: string;
-  healthIssues: string;
-  submittedAt: string;
-  status: "pending" | "contacted" | "completed";
 }
 
-export const useSurveyList = () => {
-  return useQuery<Survey[]>({
-    queryKey: ["surveyList"],
-    queryFn: getSurveyListApi,
-    staleTime: 1000 * 60, // 1분 캐싱
+export const useSurveyList = (counselStatus: string | null) => {
+  return useQuery<SurveyList[]>({
+    queryKey: ["surveyList", counselStatus],
+    queryFn: ({ queryKey }) => {
+      const [_key, status] = queryKey;
+      return getSurveyListApi(status as string);
+    },
+    staleTime: 1000 * 60 * 5, 
   });
 };

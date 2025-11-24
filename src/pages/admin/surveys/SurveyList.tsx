@@ -1,19 +1,25 @@
 import { useSurveyList } from "@/hooks/admin/useSurveyList";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function SurveyList() {
-  const { data: surveys = [], isLoading, isError } = useSurveyList();
-  const [selectedSurvey, setSelectedSurvey] = useState<any>(null);
-  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const navigate = useNavigate();
+  const [statusFilter, setStatusFilter] = useState<string | null>(null);
+  const {
+    data: surveys = [],
+    isLoading,
+    isError,
+  } = useSurveyList(statusFilter);
+
+  console.log(surveys);
 
   if (isLoading) return <div className="p-6">로딩 중...</div>;
   if (isError) return <div className="p-6 text-red-500">데이터 로딩 실패</div>;
 
   const getStatusBadge = (status: string) => {
     const statusConfig = {
-      pending: { label: "대기중", color: "bg-yellow-100 text-yellow-800" },
-      contacted: { label: "연락완료", color: "bg-blue-100 text-blue-800" },
-      completed: { label: "상담완료", color: "bg-green-100 text-green-800" },
+      WAITING: { label: "대기중", color: "bg-yellow-100 text-yellow-800" },
+      COMPLETED: { label: "상담완료", color: "bg-green-100 text-green-800" },
     };
 
     const config = statusConfig[status as keyof typeof statusConfig];
@@ -26,6 +32,12 @@ export default function SurveyList() {
     );
   };
 
+  const surveyClicked = (counselId: number) => {
+    navigate(`/admin/survey/${counselId}`);
+
+    console.log(counselId);
+  };
+
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
@@ -33,14 +45,13 @@ export default function SurveyList() {
 
         <div className="flex items-center space-x-4">
           <select
-            value={statusFilter}
+            value={`${statusFilter}`}
             onChange={(e) => setStatusFilter(e.target.value)}
             className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="all">전체</option>
-            <option value="pending">대기중</option>
-            <option value="contacted">연락완료</option>
-            <option value="completed">상담완료</option>
+            <option value="">전체</option>
+            <option value="WAITING">대기중</option>
+            <option value="COMPLETED">상담완료</option>
           </select>
         </div>
       </div>
@@ -49,18 +60,17 @@ export default function SurveyList() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
         {surveys.map((survey) => (
           <div
-            key={survey.id}
-            onClick={() => setSelectedSurvey(survey)}
+            key={survey.counselId}
+            onClick={() => surveyClicked(survey.counselId)}
             className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 cursor-pointer transition-colors"
           >
             <div className="flex justify-between items-start mb-2">
               <h3 className="font-medium text-gray-900">{survey.name}</h3>
-              {getStatusBadge(survey.status)}
+              {getStatusBadge(survey.counselStatus)}
             </div>
 
-            <p className="text-sm text-gray-600 mb-1">{survey.phone}</p>
-            <p className="text-sm text-gray-600 mb-2">{survey.email}</p>
-            <p className="text-xs text-gray-500">{survey.submittedAt}</p>
+            <p className="text-sm text-gray-600 mb-1">{survey.contact}</p>
+            <p className="text-xs text-gray-500">{survey.createAt}</p>
           </div>
         ))}
       </div>
