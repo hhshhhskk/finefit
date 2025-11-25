@@ -20,3 +20,14 @@ export const getSurveyDetailApi = async (counselId: string) => {
   const res = await api.get(`/operator/counsel/${counselId}`);
   return res.data.data;
 };
+
+// 설문지 상세 상담유무체크
+export const SurveyStatusUpdateApi = async (
+  counselId: string,
+  counselStatus: string
+) => {
+  const res = await api.put(
+    `/operator/counsel/${counselId}&counselStatus=${counselStatus}`
+  );
+  return res.data.data;
+};
