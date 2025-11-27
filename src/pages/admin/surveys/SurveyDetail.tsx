@@ -19,7 +19,6 @@ import { exerciseStyleLabelMap } from "@/pages/contact/types/exerciseStyle";
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getStatusBadge } from "./components/StatusBadge";
-import { SurveyStatusUpdateApi } from "@/api/admin/surveyApi";
 import { useSurveyStatusUpdate } from "@/hooks/admin/useSurveyStatusUpdate";
 
 const InfoBox = ({ children }: { children: React.ReactNode }) => (
