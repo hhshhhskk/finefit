@@ -1,22 +1,26 @@
+import { useSurveyDetail } from "@/hooks/admin/useSurveyDetail";
 import {
   drinkingFrequencyLabelMap,
   drinkingFrequencyList,
-  type DrinkingFrequencyType,
 } from "@/pages/contact/types/drinkingFrequency";
 import {
   exerciseTypeLabelMap,
   type ExerciseType,
 } from "@/pages/contact/types/exercise";
 import {
+  exerciseFrequencyLabelMap,
+  exerciseFrequencyList,
+} from "@/pages/contact/types/exerciseFrequency";
+import {
   exerciseGoalLabelMap,
   type ExerciseGoalType,
 } from "@/pages/contact/types/exerciseGoal";
-import {
-  exerciseStyleLabelMap,
-  type ExerciseStyleType,
-} from "@/pages/contact/types/exerciseStyle";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { exerciseStyleLabelMap } from "@/pages/contact/types/exerciseStyle";
+import React from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { getStatusBadge } from "./components/StatusBadge";
+import { SurveyStatusUpdateApi } from "@/api/admin/surveyApi";
+import { useSurveyStatusUpdate } from "@/hooks/admin/useSurveyStatusUpdate";
 
 const InfoBox = ({ children }: { children: React.ReactNode }) => (
   <p className="w-full px-4 py-3 bg-gray-100 rounded-lg text-sm border border-gray-200">
@@ -26,67 +30,12 @@ const InfoBox = ({ children }: { children: React.ReactNode }) => (
 
 export default function SurveyDetailPage() {
   const navigate = useNavigate();
-  const survey = {
-    // 기본 정보
-    name: "홍길동",
-    contact: "010-1234-5678",
-    birthDateOrAge: "1995-04-12",
-    gender: "MALE",
-    heightAndWeight: "175cm / 78kg",
-    targetWeightOrBody: "70kg / 탄탄한 몸",
+  const { surveyId } = useParams();
+  const { data: survey, isLoading, error } = useSurveyDetail(surveyId!);
+  const { mutate: updateStatus } = useSurveyStatusUpdate();
 
-    // 운동 목표
-    exerciseGoal: {
-      WEIGHT_LOSS: true,
-      WEIGHT_GAIN: false,
-      POSTURE_CORRECTION: true,
-      STRENGTH_INCREASE: true,
-      HEALTH_MANAGEMENT: true,
-      PAIN_RELIEF: false,
-      POSTURE_ADJUSTMENT: false,
-      ETC: false,
-    },
-    exerciseGoalEtc: "",
-    targetPeriod: "3개월",
-
-    // 운동 경험
-    hasPtExperience: true,
-    exerciseFrequency: "WEEK_3_4",
-    exercise: {
-      GYM: true,
-      CARDIO: true,
-      HOME_TRAINING: false,
-      PILATES_YOGA: false,
-      MARTIAL_ARTS_CROSSFIT: false,
-      ETC: false,
-    },
-    exerciseTypeEtc: "",
-    preferredStyle: {
-      DETAILED_POSTURE: true,
-      HIGH_INTENSITY: false,
-      FUN_AND_LIGHT: true,
-      CUSTOMIZED: false,
-    },
-
-    // 식습관
-    mealsPerDay: "2끼",
-    mealTimeRegularity: "불규칙",
-    favoriteFoods: "라면, 치킨, 아이스크림, 빵",
-    dietExperience: "예전에 2개월 동안 식단 관리 해본 적 있음",
-    dietGoal: "야식 줄이고 단백질 섭취 늘려보고 싶음",
-
-    // 건강 상태
-    medicalHistory: "왼쪽 어깨 회전근 약간 통증",
-    medicationOrPrecautions: "특별한 약 없음",
-
-    // 생활 습관
-    occupationAndActivity: "사무직, 하루 종일 앉아서 근무",
-    sleepInfo: "평균 5~6시간, 숙면 어려움",
-    smoking: false,
-    drinkingFrequency: "RARELY",
-    stressLevel: 4,
-    exerciseObstacles: "시간 부족, 식단 관리 어려움",
-  };
+  if (isLoading || survey === undefined) return <div>로딩중...</div>;
+  if (error) return <div>에러 발생</div>;
 
   return (
     <div className="max-w-2xl mx-auto py-10">
@@ -98,7 +47,28 @@ export default function SurveyDetailPage() {
           ← 회원 리스트로 돌아가기
         </button>
 
-        <h2 className="text-2xl font-semibold mb-6">📄 회원 설문 상세 보기</h2>
+        <div className="flex justify-between">
+          <h2 className="text-2xl font-semibold mb-6">
+            📄 회원 설문 상세 보기
+          </h2>
+          <div className="flex w-auto h-6 bg-gray-100 rounded-full">
+            {getStatusBadge(survey.counselStatus)}
+            <div
+              className="w-9 text-gray-600 text-sm hover:cursor-pointer"
+              onClick={() => {
+                const nextStatus =
+                  survey.counselStatus === "WAITING" ? "COMPLETED" : "WAITING";
+
+                updateStatus({
+                  counselId: String(surveyId),
+                  counselStatus: nextStatus,
+                });
+              }}
+            >
+              변경
+            </div>
+          </div>
+        </div>
 
         {/* 성함 */}
         <div className="mb-6">
@@ -163,7 +133,13 @@ export default function SurveyDetailPage() {
                   disabled
                   className="w-4 h-4"
                 />
-                <span>{exerciseGoalLabelMap[key]}</span>
+                <span
+                  className={
+                    checked ? "text-blue-700 font-bold" : "text-gray-500"
+                  }
+                >
+                  {exerciseGoalLabelMap[key]}
+                </span>
               </label>
             ))}
           </div>
@@ -190,7 +166,33 @@ export default function SurveyDetailPage() {
           <label className="block text-sm font-medium mb-2">
             평소 운동 빈도
           </label>
-          <InfoBox>{survey.exerciseFrequency}</InfoBox>
+
+          <div className="flex flex-col gap-2">
+            {exerciseFrequencyList.map((key) => (
+              <label
+                key={key}
+                className="flex items-center gap-2 cursor-not-allowed"
+              >
+                <input
+                  type="radio"
+                  name="exerciseFrequency"
+                  value={key}
+                  checked={survey.exerciseFrequency === key}
+                  disabled
+                  className="w-4 h-4"
+                />
+                <span
+                  className={
+                    survey.exerciseFrequency === key
+                      ? "text-blue-700 font-bold"
+                      : "text-gray-500"
+                  }
+                >
+                  {exerciseFrequencyLabelMap[key]}
+                </span>
+              </label>
+            ))}
+          </div>
         </div>
 
         {/* 해본 운동 종류 */}
@@ -208,7 +210,13 @@ export default function SurveyDetailPage() {
                     disabled
                     className="w-4 h-4"
                   />
-                  <span>{exerciseTypeLabelMap[key]}</span>
+                  <span
+                    className={
+                      checked ? "text-blue-700 font-bold" : "text-gray-500"
+                    }
+                  >
+                    {exerciseTypeLabelMap[key]}
+                  </span>
                 </label>
               )
             )}
@@ -220,21 +228,27 @@ export default function SurveyDetailPage() {
           <label className="block text-sm font-medium mb-2">
             선호 운동 스타일
           </label>
+
           <div className="grid grid-cols-2 gap-2">
-            {(
-              Object.entries(survey.preferredStyle) as [
-                ExerciseStyleType,
-                boolean
-              ][]
-            ).map(([key, checked]) => (
+            {Object.entries(exerciseStyleLabelMap).map(([key, label]) => (
               <label key={key} className="flex items-center gap-2">
                 <input
-                  type="checkbox"
-                  checked={checked}
+                  type="radio"
+                  name="preferredStyle"
+                  value={key}
+                  checked={survey.preferredStyle === key}
                   disabled
                   className="w-4 h-4"
                 />
-                <span>{exerciseStyleLabelMap[key]}</span>
+                <span
+                  className={
+                    survey.preferredStyle === key
+                      ? "text-blue-700 font-bold"
+                      : "text-gray-500"
+                  }
+                >
+                  {label}
+                </span>
               </label>
             ))}
           </div>
@@ -320,8 +334,14 @@ export default function SurveyDetailPage() {
                   disabled
                   className="w-4 h-4"
                 />
-                <span>
-                  {drinkingFrequencyLabelMap[key as DrinkingFrequencyType]}
+                <span
+                  className={
+                    survey.drinkingFrequency === key
+                      ? "text-blue-700 font-bold"
+                      : "text-gray-500"
+                  }
+                >
+                  {drinkingFrequencyLabelMap[key]}
                 </span>
               </label>
             ))}

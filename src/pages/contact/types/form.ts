@@ -31,7 +31,7 @@ export type FormData = {
   exerciseFrequency: ExerciseFrequencyType; // 평소 운동 빈도
   exercise: Record<ExerciseType, boolean>; // 해본 운동 종류 (복수선택가능)
   exerciseTypeEtc: string; // 운동 종류가 '기타'인 경우 상세 내용
-  preferredStyle: Record<ExerciseStyleType, boolean>; // 운동 시 선호하는 스타일 (복수선택가능)
+  preferredStyle: Record<ExerciseStyleType, boolean>; // 운동 시 선호하는 스타일
 
   // 식습관
   mealsPerDay: string; // 하루 평균 식사 횟수

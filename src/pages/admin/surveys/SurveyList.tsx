@@ -1,6 +1,7 @@
 import { useSurveyList } from "@/hooks/admin/useSurveyList";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getStatusBadge } from "./components/StatusBadge";
 
 export default function SurveyList() {
   const navigate = useNavigate();
@@ -15,22 +16,6 @@ export default function SurveyList() {
 
   if (isLoading) return <div className="p-6">로딩 중...</div>;
   if (isError) return <div className="p-6 text-red-500">데이터 로딩 실패</div>;
-
-  const getStatusBadge = (status: string) => {
-    const statusConfig = {
-      WAITING: { label: "대기중", color: "bg-yellow-100 text-yellow-800" },
-      COMPLETED: { label: "상담완료", color: "bg-green-100 text-green-800" },
-    };
-
-    const config = statusConfig[status as keyof typeof statusConfig];
-    return (
-      <span
-        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${config.color}`}
-      >
-        {config.label}
-      </span>
-    );
-  };
 
   const surveyClicked = (counselId: number) => {
     navigate(`/admin/survey/${counselId}`);
