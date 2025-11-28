@@ -1,48 +1,27 @@
 import { useApprovalList } from "@/hooks/admin/useApprovalList";
 import { useState } from "react";
+import { getStatusBadge } from "./components/StatusBadge";
+import { useUpdateApprovalStatus } from "@/hooks/admin/useApprovalStatusUpdate";
 
 export default function ApprovalManagement() {
-  const { data: approvalList, isLoading, isError } = useApprovalList("PENDING");
-
+  const { data: approvalList, isLoading, isError } = useApprovalList("");
+  const { mutate: updateStatus } = useUpdateApprovalStatus();
   const [filter, setFilter] = useState<
     "" | "PENDING" | "APPROVED" | "REJECTED"
   >("PENDING");
+  console.log(approvalList);
 
-  const handleApprove = (userId: string) => {};
-  const handleReject = (userId: string) => {};
+  const handleApprove = (userId: string) => {
+    updateStatus({ userId, approvalStatus: "APPROVED" });
+  };
 
+  const handleReject = (userId: string) => {
+    updateStatus({ userId, approvalStatus: "REJECTED" });
+  };
   const filteredUsers = approvalList?.filter((data) => {
     if (filter === "") return true;
     return data.approvalStatus === filter;
   });
-
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "PENDING":
-        return (
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-            <i className="ri-time-line mr-1"></i>
-            승인 대기
-          </span>
-        );
-      case "APPROVED":
-        return (
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-            <i className="ri-check-line mr-1"></i>
-            승인 완료
-          </span>
-        );
-      case "REJECTED":
-        return (
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-            <i className="ri-close-line mr-1"></i>
-            승인 거부
-          </span>
-        );
-      default:
-        return null;
-    }
-  };
 
   const pendingCount =
     approvalList?.filter((data) => data.approvalStatus === "PENDING").length ??
@@ -179,8 +158,7 @@ export default function ApprovalManagement() {
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {/* {user.appliedAt} */}
-                    날짜없음
+                    {user.createAt}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {getStatusBadge(user.approvalStatus)}

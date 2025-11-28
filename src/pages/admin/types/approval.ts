@@ -3,6 +3,7 @@ export interface ApprovedData {
   trainerId: string;
   trainerName: string;
   connect: string;
+  createAt: string;
   storeNumber: string;
   role: string;
   team: string;

@@ -10,6 +10,7 @@ import LoginPage from "@/pages/admin/login/LoginPage";
 import RegisterPage from "@/pages/admin/register/RegisterPage";
 import ProtectedRoute from "@/pages/admin/components/ProtectedRoute";
 import SurveyDetailPage from "@/pages/admin/surveys/SurveyDetail";
+import MBTIResult from "@/pages/mbti/components/MBTIResult";
 
 export default function AppRoutes() {
   const isLoggedIn = !!sessionStorage.getItem("role");
@@ -20,6 +21,7 @@ export default function AppRoutes() {
       children: [
         { index: true, element: <Home /> },
         { path: "mbti", element: <Mbti /> },
+        { path: "mbti/:type", element: <MBTIResult /> },
         { path: "contact", element: <Contact /> },
       ],
     },

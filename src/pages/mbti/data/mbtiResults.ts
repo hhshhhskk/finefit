@@ -1,0 +1,248 @@
+import type { MBTIResultData } from "../types/mbtiType";
+
+export const mbtiResults: Record<string, MBTIResultData> = {
+  ESFJ: {
+    type: "ESFJ",
+    title: "성실한 다이어터",
+    description:
+      "늘 식단 지키고 계획대로 하는 착실파. 주변 사람들과 함께 건강한 습관을 만들어가는 타입입니다.",
+    characteristics: [
+      "계획적인 식단 관리",
+      "꾸준한 운동 습관",
+      "주변과 함께하는 운동",
+      "감정적 동기부여",
+    ],
+    recommendations: [
+      "그룹 운동 클래스",
+      "식단 일기 작성",
+      "운동 파트너 찾기",
+      "단계별 목표 설정",
+    ],
+  },
+  ESFP: {
+    type: "ESFP",
+    title: "행복한 돼지",
+    description:
+      "맛있게 먹고, 즐겁게 살고, 운동은 가끔 생각나는 자유로운 타입입니다.",
+    characteristics: [
+      "즐거운 식사 문화",
+      "즉흥적인 운동",
+      "스트레스 없는 다이어트",
+      "긍정적인 마인드",
+    ],
+    recommendations: [
+      "재미있는 스포츠",
+      "댄스 운동",
+      "친구와 함께하는 활동",
+      "유연한 식단 관리",
+    ],
+  },
+  ESTJ: {
+    type: "ESTJ",
+    title: "근육 군인",
+    description: "딱딱한 계획과 철저한 생활, 스스로에게도 엄격한 타입입니다.",
+    characteristics: [
+      "엄격한 자기관리",
+      "체계적인 운동 계획",
+      "목표 지향적",
+      "강한 의지력",
+    ],
+    recommendations: [
+      "웨이트 트레이닝",
+      "정확한 식단 계획",
+      "운동 기록 관리",
+      "단기 목표 설정",
+    ],
+  },
+  ESTP: {
+    type: "ESTP",
+    title: "근육 뚱땡이",
+    description: "힘은 좋은데 먹는 것도 포기 못하는 즉흥형입니다.",
+    characteristics: [
+      "강한 체력",
+      "즉흥적인 식습관",
+      "활동적인 성격",
+      "현실적인 접근",
+    ],
+    recommendations: [
+      "고강도 운동",
+      "간헐적 단식",
+      "액티브한 스포츠",
+      "칼로리 소모 중심 운동",
+    ],
+  },
+  ISFJ: {
+    type: "ISFJ",
+    title: "도시락 요정",
+    description: "어디서든 닭가슴살 꺼내는 성실 식단러입니다.",
+    characteristics: [
+      "완벽한 식단 준비",
+      "조용한 운동 선호",
+      "꾸준한 습관",
+      "세심한 관리",
+    ],
+    recommendations: [
+      "홈트레이닝",
+      "식단 준비",
+      "요가나 필라테스",
+      "개인 운동 프로그램",
+    ],
+  },
+  ISFP: {
+    type: "ISFP",
+    title: "간헐적 도전러",
+    description: "내일부터 진짜 시작!을 반복하는 귀여운 타입입니다.",
+    characteristics: [
+      "감성적인 동기",
+      "유연한 접근",
+      "자신만의 페이스",
+      "스트레스 민감",
+    ],
+    recommendations: [
+      "부담 없는 운동",
+      "자연 속 활동",
+      "감정 관리",
+      "작은 목표부터 시작",
+    ],
+  },
+  ISTJ: {
+    type: "ISTJ",
+    title: "체중계 집착러",
+    description: "숫자(kg, %)가 모든 기준. 매일 올라가 확인하는 타입입니다.",
+    characteristics: [
+      "정확한 수치 관리",
+      "규칙적인 생활",
+      "데이터 중심 접근",
+      "꾸준한 실행",
+    ],
+    recommendations: [
+      "체성분 분석",
+      "운동 기록 앱",
+      "정확한 칼로리 계산",
+      "수치 목표 설정",
+    ],
+  },
+  ISTP: {
+    type: "ISTP",
+    title: "혼자만의 운동가",
+    description: "조용히 자기 방식대로 즉흥적으로 하는 타입입니다.",
+    characteristics: [
+      "독립적인 운동",
+      "실용적인 접근",
+      "유연한 방법",
+      "효율성 추구",
+    ],
+    recommendations: [
+      "개인 운동",
+      "기능성 운동",
+      "실용적인 식단",
+      "자유로운 스케줄",
+    ],
+  },
+  ENFJ: {
+    type: "ENFJ",
+    title: "동기부여 캡틴",
+    description: "주변까지 끌고 다니며 열정 뿜뿜하는 리더입니다.",
+    characteristics: [
+      "강한 리더십",
+      "타인 동기부여",
+      "장기적 비전",
+      "감정적 연결",
+    ],
+    recommendations: [
+      "그룹 운동 리더",
+      "운동 커뮤니티",
+      "동기부여 프로그램",
+      "멘토링 활동",
+    ],
+  },
+  ENFP: {
+    type: "ENFP",
+    title: "운동 불꽃놀이",
+    description: "새로운 거 시도하다가 금방 질리지만 에너지는 최고입니다.",
+    characteristics: ["높은 에너지", "다양한 시도", "창의적 접근", "변화 추구"],
+    recommendations: [
+      "다양한 운동 체험",
+      "새로운 스포츠",
+      "크로스핏",
+      "운동 챌린지",
+    ],
+  },
+  ENTJ: {
+    type: "ENTJ",
+    title: "몸 만들기 CEO",
+    description: "목표 정으면 끝까지 해내는 추진력을 가진 타입입니다.",
+    characteristics: [
+      "강한 목표 의식",
+      "체계적 계획",
+      "효율성 추구",
+      "결과 중심",
+    ],
+    recommendations: [
+      "전문 트레이너",
+      "체계적 프로그램",
+      "명확한 목표 설정",
+      "성과 측정",
+    ],
+  },
+  ENTP: {
+    type: "ENTP",
+    title: "헬스 발명가",
+    description: "신박한 방법만 찾아다니는 아이디어형입니다.",
+    characteristics: ["창의적 방법", "실험 정신", "다양한 접근", "혁신 추구"],
+    recommendations: [
+      "새로운 운동법",
+      "실험적 식단",
+      "최신 트렌드",
+      "창의적 루틴",
+    ],
+  },
+  INFJ: {
+    type: "INFJ",
+    title: "조용한 철학 다이어터",
+    description: "운동을 인생 수양처럼 하는 묵묵한 타입입니다.",
+    characteristics: ["깊은 동기", "철학적 접근", "장기적 관점", "내적 동기"],
+    recommendations: ["명상과 운동", "요가", "자연 속 운동", "마음챙김 식사"],
+  },
+  INFP: {
+    type: "INFP",
+    title: "몽상 다이어터",
+    description: "내 이상적인 몸은…을 상상하며 늘 꿈꾸는 타입입니다.",
+    characteristics: [
+      "이상적 목표",
+      "감성적 동기",
+      "개인적 의미",
+      "유연한 접근",
+    ],
+    recommendations: [
+      "개인 맞춤 운동",
+      "감성적 동기부여",
+      "예술적 운동",
+      "자유로운 식단",
+    ],
+  },
+  INTJ: {
+    type: "INTJ",
+    title: "칼로리 전략가",
+    description: "식단·운동을 분석하고 설계하는 과학자 스타일입니다.",
+    characteristics: [
+      "과학적 접근",
+      "전략적 계획",
+      "효율성 추구",
+      "장기적 비전",
+    ],
+    recommendations: [
+      "데이터 기반 운동",
+      "과학적 식단",
+      "체계적 분석",
+      "최적화된 루틴",
+    ],
+  },
+  INTP: {
+    type: "INTP",
+    title: "다이어트 실험러",
+    description: "유행하는 운동·식단 다 해보는 호기심 덩어리입니다.",
+    characteristics: ["실험 정신", "이론적 관심", "다양한 시도", "분석적 사고"],
+    recommendations: ["실험적 접근", "이론 학습", "다양한 방법론", "개인 연구"],
+  },
+};
