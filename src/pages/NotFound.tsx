@@ -6,7 +6,7 @@ export default function NotFound() {
         This page has not been generated
       </h1>
       <p className="mt-4 text-xl md:text-2xl text-gray-500">
-        Tell me what you would like on this page{" "}
+        Tell me what you would like on this page
       </p>
     </div>
   );
