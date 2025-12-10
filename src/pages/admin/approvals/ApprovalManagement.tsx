@@ -9,7 +9,7 @@ export default function ApprovalManagement() {
   const [filter, setFilter] = useState<
     "" | "PENDING" | "APPROVED" | "REJECTED"
   >("PENDING");
-  console.log(approvalList);
+  // console.log(approvalList);
 
   const handleApprove = (userId: string) => {
     updateStatus({ userId, approvalStatus: "APPROVED" });

@@ -18,7 +18,6 @@ export const getSurveyListApi = async (counselStatus: string | null) => {
 // 설문지 상세 조회
 export const getSurveyDetailApi = async (counselId: string) => {
   const res = await api.get(`/operator/counsel/${counselId}`);
-  console.log(res.data);
 
   return res.data.data;
 };

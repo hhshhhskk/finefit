@@ -8,12 +8,13 @@ import { useNavigate } from "react-router-dom";
 
 export default function AdminPage() {
   const navigate = useNavigate();
+  const userRoleValue = Number(sessionStorage.getItem("roleValue")) || 1;
   const [dashboardTab, setDashboardTab] = useState<
     "surveys" | "sales" | "members" | "approvals"
   >("surveys");
 
   const handleLogout = () => {
-    sessionStorage.removeItem("role");
+    sessionStorage.clear();
     navigate("/admin/login");
   };
 
@@ -42,6 +43,7 @@ export default function AdminPage() {
           <Category
             dashboardTab={dashboardTab}
             setDashboardTab={setDashboardTab}
+            userRoleValue={userRoleValue}
           />
 
           <div className="p-6">

@@ -12,15 +12,13 @@ export default function SurveyList() {
     isError,
   } = useSurveyList(statusFilter);
 
-  console.log(surveys);
+  // console.log(surveys);
 
   if (isLoading) return <div className="p-6">로딩 중...</div>;
   if (isError) return <div className="p-6 text-red-500">데이터 로딩 실패</div>;
 
   const surveyClicked = (counselId: number) => {
     navigate(`/admin/survey/${counselId}`);
-
-    console.log(counselId);
   };
 
   return (

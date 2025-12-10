@@ -58,6 +58,7 @@ export default function LoginForm() {
           {...register("trainerId", {
             required: "아이디를 입력해주세요",
           })}
+          autoComplete="username"
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
           placeholder="아이디를 입력하세요."
         />
@@ -82,6 +83,7 @@ export default function LoginForm() {
           {...register("password", {
             required: "비밀번호를 입력해주세요",
           })}
+          autoComplete="current-password"
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
           placeholder="비밀번호를 입력하세요"
         />

@@ -89,6 +89,7 @@ export default function RegisterForm() {
           {...register("trainerId", {
             required: "아이디는 필수 입력값입니다.",
           })}
+          autoComplete="username"
           className="w-full px-3 py-2 border rounded-md"
           placeholder="아이디 입력"
         />
@@ -109,6 +110,7 @@ export default function RegisterForm() {
               message: "비밀번호는 8자 이상이어야 합니다.",
             },
           })}
+          autoComplete="new-password"
           className="w-full px-3 py-2 border rounded-md"
           placeholder="비밀번호 (8자 이상)"
         />
@@ -125,6 +127,7 @@ export default function RegisterForm() {
           {...register("confirmPassword", {
             required: "비밀번호 확인이 필요합니다.",
           })}
+          autoComplete="new-password"
           className="w-full px-3 py-2 border rounded-md"
           placeholder="비밀번호 다시 입력"
         />

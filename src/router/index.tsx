@@ -13,7 +13,7 @@ import SurveyDetailPage from "@/pages/admin/surveys/SurveyDetail";
 import MBTIResult from "@/pages/mbti/components/MBTIResult";
 
 export default function AppRoutes() {
-  const isLoggedIn = !!sessionStorage.getItem("role");
+  const isLoggedIn = !!sessionStorage.getItem("token");
   const routes = [
     {
       path: "/",
