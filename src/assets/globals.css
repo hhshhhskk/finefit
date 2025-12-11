@@ -1,0 +1,14 @@
+/* src/assets/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 항상 스크롤바 표시해서 흔들림 방지 */
+@layer base {
+  html {
+    overflow-y: scroll;
+  }
+}
+
+body {
+}
