@@ -1,15 +1,23 @@
 import { loginApi } from "@/api/admin/loginApi";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 export interface LoginFormValues {
   trainerId: string;
   password: string;
 }
 
+interface LoginApiResponse {
+  code: number;
+  message?: string;
+}
+
 export default function LoginForm() {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -24,22 +32,36 @@ export default function LoginForm() {
   useEffect(() => {
     const isLoggedIn = !!sessionStorage.getItem("role");
     if (isLoggedIn) {
-      navigate("/admin");
+      navigate("/admin", { replace: true });
     }
-  }, []);
+  }, [navigate]);
 
   const onSubmit = async (loginData: LoginFormValues) => {
+    if (isLoading) return;
+
+    setIsLoading(true);
     try {
-      const res = await loginApi(loginData);
+      const res: LoginApiResponse = await loginApi(loginData);
 
       if (res.code === 200) {
-        navigate("/admin");
+        navigate("/admin", { replace: true });
       } else {
-        alert("아이디 또는 비밀번호가 올바르지 않습니다.");
+        alert(res.message || "아이디 또는 비밀번호가 올바르지 않습니다.");
       }
     } catch (error) {
+      console.error("로그인 오류:", error);
       alert("로그인에 실패했습니다. 다시 시도해주세요.");
+    } finally {
+      setIsLoading(false);
     }
+  };
+
+  // 흔들림 애니메이션
+  const shakeAnimation = {
+    x: [0, -10, 10, -10, 10, 0],
+    transition: {
+      duration: 0.4,
+    },
   };
 
   return (
@@ -52,18 +74,30 @@ export default function LoginForm() {
         >
           아이디
         </label>
-        <input
+        <motion.input
           id="trainerId"
           type="text"
           {...register("trainerId", {
             required: "아이디를 입력해주세요",
           })}
           autoComplete="username"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-          placeholder="아이디를 입력하세요."
+          disabled={isLoading}
+          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:border-transparent text-sm disabled:bg-gray-100 disabled:cursor-not-allowed transition-colors ${
+            errors.trainerId
+              ? "border-red-500 focus:ring-red-500 bg-red-50"
+              : "border-gray-300 focus:ring-blue-500"
+          }`}
+          placeholder="아이디를 입력하세요"
+          aria-invalid={errors.trainerId ? "true" : "false"}
+          aria-describedby={errors.trainerId ? "trainerId-error" : undefined}
+          animate={errors.trainerId ? shakeAnimation : {}}
         />
         {errors.trainerId && (
-          <span className="text-red-500 text-sm">
+          <span
+            id="trainerId-error"
+            role="alert"
+            className="text-red-500 text-sm mt-1 block"
+          >
             {errors.trainerId.message}
           </span>
         )}
@@ -77,18 +111,30 @@ export default function LoginForm() {
         >
           비밀번호
         </label>
-        <input
+        <motion.input
           id="password"
           type="password"
           {...register("password", {
             required: "비밀번호를 입력해주세요",
           })}
           autoComplete="current-password"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+          disabled={isLoading}
+          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:border-transparent text-sm disabled:bg-gray-100 disabled:cursor-not-allowed transition-colors ${
+            errors.password
+              ? "border-red-500 focus:ring-red-500 bg-red-50"
+              : "border-gray-300 focus:ring-blue-500"
+          }`}
           placeholder="비밀번호를 입력하세요"
+          aria-invalid={errors.password ? "true" : "false"}
+          aria-describedby={errors.password ? "password-error" : undefined}
+          animate={errors.password ? shakeAnimation : {}}
         />
         {errors.password && (
-          <span className="text-red-500 text-sm">
+          <span
+            id="password-error"
+            role="alert"
+            className="text-red-500 text-sm mt-1 block"
+          >
             {errors.password.message}
           </span>
         )}
@@ -97,9 +143,10 @@ export default function LoginForm() {
       {/* 로그인 버튼 */}
       <button
         type="submit"
-        className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors font-medium cursor-pointer whitespace-nowrap"
+        disabled={isLoading}
+        className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
       >
-        로그인
+        {isLoading ? "로그인 중..." : "로그인"}
       </button>
     </form>
   );
